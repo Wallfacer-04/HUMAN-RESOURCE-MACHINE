@@ -1,6 +1,6 @@
 #include "initialization.h"
 
-//机器人位置初始化
+//机器人位置初始化 a
 
 int main()
 {
