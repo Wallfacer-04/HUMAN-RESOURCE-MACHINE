@@ -1,0 +1,51 @@
+#pragma once
+
+#include<cstdio>
+#include<iostream>
+#include<cstring>
+#include<cstdlib>
+#include<cmath>
+#include<conio.h>
+#include<Windows.h>
+using namespace std;
+
+#define HEIGHT 50
+#define WIDE 119
+#define MAXN WIDE*HEIGHT//机器人最大占多少个位置
+
+//typedef struct _COORD
+//{
+//	int X;
+//	int Y;
+//}COORD;
+struct DIRECT//坐标
+{
+	int X, Y;//坐标方式指定每个点位置
+};
+
+struct ROBOT
+{
+	DIRECT body[MAXN];//存储机器人加货物
+	int size;//指定机器人加上货物一共的大小
+}robot;
+
+struct WOOD
+{
+	DIRECT body[MAXN];//存储机器人加货物
+	int size;//指定机器人加上货物一共的大小
+}inwood,outwood,emptywood;
+//inwood输入传送带，outwood输出传送带，emptywood空地
+
+int score = 0;//分数
+//函数声明
+void initrobot();
+void initwood();
+void initUI();
+void PrintRobot();
+void PrintWood(int, int, char);
+void PrintInwood();
+void PrintOutwood();
+void PrintEmptywood();
+void PrintIN();
+void PrintOUT();
+void Print(int, int, char);
