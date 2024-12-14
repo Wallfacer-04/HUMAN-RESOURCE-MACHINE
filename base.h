@@ -21,7 +21,7 @@ using namespace std;
 //	int X;
 //	int Y;
 //}COORD;
-extern int n;
+extern int level;
 extern bool flag;//标记是否出错
 extern int emptynum;//当前空地数
 extern int speed ;//调整机器人移动速度，全局变量 
@@ -42,7 +42,8 @@ extern bool mark[1000];
 
 struct Instruction
 {
-	char s[10];
+	char s[10000];
+	char appendix[10000];
 	int num;
 };
 extern Instruction instruction[1002];
@@ -80,6 +81,7 @@ void initwood();
 void initUI1();
 void initUI2();
 void initUI3();
+void initUI4();
 void PrintRobot();
 void deleterobot();
 void PrintWood(int, int, string);
@@ -95,9 +97,19 @@ void movetoleft();
 void movetoright();
 void deletenowwood();
 
+void initwood_4();
+void PrintInwood_4();
+void PrintOutwood_4();
+void PrintLine_4();
+void PrintEmptywood_4(int);
+void PrintIN_4();
+void PrintOUT_4();
+void PrintCode_4();
+
 void Judge1();
 void Judge2();
 void Judge3();
+void Judge4();
 
 void setposition(int, int);
 void Hide();
@@ -116,3 +128,7 @@ void copyto(int);
 void copyfrom(int);
 void jump(int, int*);
 void jumpifzero(int, int*);
+void inbox_4();
+void outbox_4();
+
+void overagain();
