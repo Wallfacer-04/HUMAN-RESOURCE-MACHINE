@@ -1,0 +1,28 @@
+inbox
+copyto 0
+inbox
+copyto 1
+inbox
+outbox
+inbox
+copyto 2
+outbox
+copyfrom 0
+outbox
+inbox
+copyto 0
+outbox
+copyfrom 1
+outbox
+copyfrom 0
+outbox
+inbox
+copyto 1
+copyfrom 2
+outbox
+copyfrom 2
+outbox
+inbox
+outbox
+copyfrom 1
+outbox
