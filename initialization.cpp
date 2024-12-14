@@ -92,6 +92,38 @@ void initUI3()
 	PrintCode();
 }
 
+
+void initUI4()
+{
+	initrobot(20, 4);
+	initwood_4();
+
+	//画机器人
+	PrintRobot();
+	//画inwood传送带
+	PrintInwood_4();
+	setposition(7, 2);//设置光标位置
+	putchar('r');
+	setposition(7, 5);//设置光标位置
+	putchar('w');
+	setposition(7, 8);
+	putchar('d');
+	setposition(7, 11);
+	putchar('l');
+	setposition(7, 14);
+	cout << 'o';
+	setposition(7, 17);
+	cout << 'h';
+	//画出emptywood空地
+	PrintEmptywood(3);
+	//画outwood传送带
+	PrintOutwood_4();
+	//画竖线
+	PrintLine_4();
+	//命令行界面
+	PrintCode_4();
+}
+
 //初始化robot、wood的变量信息
 // 
 //robot左上角坐标：x=20,y=4
@@ -158,3 +190,28 @@ void initwood()
 
 	return;
 }
+
+void initwood_4()
+{
+	for (int i = 0; i < 6; i++)
+	{
+		inwood.body[i].X = 5;
+		inwood.body[i].Y = 1 + 3 * i;
+	}//初始化inwood输入传送带  x=5,y=1
+	for (int i = 0; i < 4; i++)
+	{
+		emptywood.body[i].X = 15 + 5 * i;
+		emptywood.body[i].Y = 11;
+	}//初始化emptywood空地  x=15 y=11
+	for (int i = 0; i < 5; i++)
+	{
+		outwood.body[i].X = 40;
+		outwood.body[i].Y = 1 + 3 * i;
+
+		outwood.body[i + 5].X = 46;
+		outwood.body[i + 5].Y = 1 + 3 * i;
+	}//初始化outwood传送带 x=40 y=1
+
+	return;
+}
+
