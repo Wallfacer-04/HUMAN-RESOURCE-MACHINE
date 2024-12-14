@@ -4,11 +4,11 @@ int tonum(char s[])//字符串转化成整数
 
 	int len = strlen(s);
 	int num = 0;
-	int flag = 1;
+	int f = 1;
 	for (int i = 0; i < len; i++) {
 		if (s[i] == '-')
 		{
-			flag = -1;
+			f = -1;
 			continue;
 		}
 		else
@@ -16,7 +16,7 @@ int tonum(char s[])//字符串转化成整数
 			num = num * 10 + s[i] - '0';
 		}
 	}
-	return flag * num;
+	return f * num;
 }
 
 void tostring(char s[], int num)//传址调用 
@@ -74,7 +74,7 @@ int tonumstruction(char s2[])
 	}
 	s2[p2 + 1] = '\0';
 	int numb = tonum(s2 + p1);
-	if (numb > n || numb < 0) return -1;
+	if ( numb < 0 ) return -1;
 	return numb;
 }
 bool notinstruction(char s[])
@@ -86,3 +86,4 @@ bool notinstruction(char s[])
 	}
 	else return 0;
 }
+
