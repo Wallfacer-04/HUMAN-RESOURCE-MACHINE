@@ -9,7 +9,7 @@ void Judge1()//判断游戏第一关胜负
 	system("cls");
 	if (outputnum == 2 && output[0][0] == '2' && output[1][0] == '1')
 	{
-		cout << "Success\n";
+		cout << "Success\n\n";
 		ifstream fin;
 		fin.open("in.txt");
 		int nn;//记录第几关 
@@ -24,7 +24,7 @@ void Judge1()//判断游戏第一关胜负
 		}
 
 	}
-	else cout << "Fail\n";
+	else cout << "Fail\n\n";
 	system("pause");
 	system("cls");
 	selectlevel();
@@ -38,7 +38,7 @@ void Judge2()//判断游戏第二关胜负
 		(strcmp(output[3], "0") == 0) && (strcmp(output[4], "-4") == 0) && (strcmp(output[5], "4") == 0)
 		&& (strcmp(output[6], "6") == 0) && (strcmp(output[7], "-6") == 0))
 	{
-		cout << "Success\n";
+		cout << "Success\n\n";
 		ifstream fin;
 		fin.open("in.txt");
 		int nn;//记录第几关 
@@ -56,7 +56,7 @@ void Judge2()//判断游戏第二关胜负
 		system("cls");
 		selectlevel();
 	}
-	else cout << "Fail\n";
+	else cout << "Fail\n\n";
 	
 	system("pause");
 	system("cls");
@@ -69,7 +69,7 @@ void Judge3()//判断游戏第三关胜负
 	system("cls");
 	if (outputnum == 2 && (strcmp(output[0], "-3") == 0) && (strcmp(output[1], "7") == 0))
 	{
-		cout << "Success\n";
+		cout << "Success\n\n";
 		ifstream fin;
 		fin.open("in.txt");
 		int nn;//记录第几关 
@@ -87,8 +87,43 @@ void Judge3()//判断游戏第三关胜负
 		system("cls");
 		selectlevel();
 	}
-	else cout << "Fail\n";
+	else cout << "Fail\n\n";
 	
+	system("pause");
+	system("cls");
+	selectlevel();
+}
+
+void Judge4()//判断游戏第三关胜负
+{
+	setposition(0, 29);//设置光标位置
+	system("pause");
+	system("cls");
+	if (outputnum == 10 && (strcmp(output[0], "h") == 0) && (strcmp(output[1], "e") == 0) && 
+		(strcmp(output[2], "l") == 0) && (strcmp(output[3], "l") == 0) && (strcmp(output[4], "o") == 0) &&
+		(strcmp(output[5], "w") == 0) && (strcmp(output[6], "o") == 0) && (strcmp(output[7], "r") == 0)
+		&& (strcmp(output[8], "l") == 0) && (strcmp(output[9], "d") == 0))
+	{
+		cout << "Hello, world!\n\n";
+		ifstream fin;
+		fin.open("in.txt");
+		int nn;//记录第几关 
+		fin >> nn;
+		fin.close();
+		if (nn < 5)
+		{
+			ofstream fout;
+			fout.open("in.txt");
+			fout << 5;
+			fout.close();
+		}
+
+		system("pause");
+		system("cls");
+		selectlevel();
+	}
+	else cout << "Fail\n\n";
+
 	system("pause");
 	system("cls");
 	selectlevel();
