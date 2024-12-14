@@ -222,3 +222,90 @@ void Hide()//隐藏光标
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cci);
 	return;
 }
+
+
+
+void PrintInwood_4()
+{
+	PrintIN();
+	//画inwood传送带
+	for (int i = 0; i < 6; i++)
+	{
+		PrintWood(inwood.body[i].X, inwood.body[i].Y, "X");
+	}
+}
+//inwood   x=5,y=1
+
+void PrintEmptywood_4(int k)
+{
+	//画emptywood传送带
+	for (int i = 0; i < k; i++)
+	{
+		PrintWood(emptywood.body[i].X, emptywood.body[i].Y+2, "X");
+		setposition(emptywood.body[i].X + 2, emptywood.body[i].Y + 3+2);
+		putchar(i + 48);
+	}
+	return;
+}
+
+//emptywood   x=15,y=11
+void PrintOutwood_4()
+{
+	//画Outwood传送带
+	PrintOUT_4();
+	for (int i = 0; i < 10; i++)
+	{
+		PrintWood(outwood.body[i].X, outwood.body[i].Y, "X");
+	}
+
+	return;
+}
+//outwood    x=40,y=1
+//画出竖线 位置：x=55 1~18行
+void PrintLine_4()
+{
+	COORD coord = { 0 };		//光标结构体定义
+	for (int i = 1; i <= 18; i++)
+	{
+		coord.X = 55+6;
+		coord.Y = i;
+		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
+		putchar('|');
+	}
+}
+//打印emptywood的编号
+
+//IN的位置：X=0，Y=3
+void PrintIN_4()
+{
+	COORD coord = { 0 };		//光标结构体定义
+	coord.X = 0;
+	coord.Y = 3;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
+	cout << "IN";
+	return;
+}
+//OUT的位置：X=48,Y=3
+void PrintOUT_4()
+{
+	COORD coord = { 0 };		//光标结构体定义
+	coord.X = 48+5;
+	coord.Y = 3;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
+	cout << "OUT";
+	return;
+}
+
+void PrintCode_4()
+{
+	COORD coord = { 0 };		//光标结构体定义
+	coord.X = 57+6;
+	coord.Y = 1;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
+	for (int i = 0; i < 5; i++)
+		putchar('=');
+	cout << " CODE ";
+	for (int i = 0; i < 5; i++)
+		putchar('=');
+	return;
+}
