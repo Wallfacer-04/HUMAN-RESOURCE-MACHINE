@@ -1,7 +1,7 @@
 #include "base.h"
 //#define _CRT_SECUER_NO_WARNINGS
 //机器人位置初始化
-int n;
+int level;
 bool flag;//标记是否出错
 int emptynum;//当前空地数
 int speed = 100;//调整机器人移动速度，全局变量 
@@ -37,10 +37,7 @@ int main()
 			cout << "#";
 		cout << endl;
 	}*/
-	for (int i = 0; i < 20; i++)
-		input[i][0] = 'X';
-	for (int i = 0; i < 20; i++)
-		output[i][0] = 'X';
+	
 
 	selectlevel();//选择关卡界面，其中调用Play函数
 	COORD coord = { 0 };
@@ -52,27 +49,30 @@ int main()
 }
 void selectlevel()
 {
+	overagain();
+
 	COORD coord = { 0 };		//光标结构体定义
 
 	ifstream fin;
 	fin.open("in.txt");
 	if (!fin.is_open())cout << "Error";
-	fin >> n;
+	fin >> level;
 	fin.close();
 	int m = 10005;
 	
-	while (m > n)
+	while (m > level)
 	{
 		printlevel();
 		coord.X = 30;
 		coord.Y = 11;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
-		cout << "您当前已通关至：第 " << n << " 关 ";//printf("您当前已通关至：第 % d 关 ", n);
+		if (level == 5) cout << "您已经通过所有关卡！";
+		else cout << "您当前已通关至：第 " << level << " 关 ";//printf("您当前已通关至：第 % d 关 ", n);
 		coord.X = 30;
 		coord.Y = 13;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
 		printf("你现在可以选择的关卡有：第 ");
-		for (int i = 1; i <= n; i++)
+		for (int i = 1; i <= level && i<=4; i++)
 		{
 			printf("%d ", i);
 		}
@@ -81,28 +81,54 @@ void selectlevel()
 		coord.Y = 14;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
 		printf("请从键盘输入你想玩的关卡 ");
-		cin >> m;
-		if (m > n)
+
+		char nnn[10000];
+		cin.getline(nnn, 10000);
+		m = tonumstruction(nnn);
+		
+		if (m == -1)
+		{
+			setposition(30, 16);
+			cout << "格式错误，请重新输入";
+			setposition(30, 17);
+			system("pause");
+			system("cls");
+			selectlevel();
+		}
+		if (m != 1 && m != 2 && m != 3 && m != 4)
+		{
+			setposition(30, 16);
+			cout << "不存在此关卡，请重新输入";
+			setposition(30, 17);
+			system("pause");
+			system("cls");
+			selectlevel();
+		}
+
+		if (m > level)
 		{
 			coord.X = 30;
-			coord.Y = 15;
+			coord.Y = 16;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
-			printf("抱歉，您不能跳关,请重新选择关卡 ");
+			cout << "第 " << m << " 关尚未解锁，请重新选择关卡";
 		}
+
 		coord.X = 30;
-		coord.Y = 16;
+		coord.Y = 17;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);//设置光标位置
 		system("pause");
 		system("cls");
+
 	}
 
 	if (m == 1) Play1();
 	if (m == 2) Play2();
 	if (m == 3) Play3();
-	//if (m == 4) Play4();
+	if (m == 4) Play4();
 	return;
 }
 
+//打印关卡的四个方框
 void printlevel()
 {
 	for (int i = 1; i < 6; i++)
@@ -127,13 +153,30 @@ void printlevel()
 		setposition(61, 6 + j); printf("|");
 		setposition(71, 6 + j); printf("|");
 	}
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < level && i<4; i++)
 	{
 		setposition(38 + i * 10, 7);
 		cout << i + 1;
 	}
-	for (int i = n; i < 4; i++)
+	for (int i = level; i < 4; i++)
 	{
 		setposition(38 + i * 10, 7); printf("X");
 	}
+}
+
+//重新返回关卡选择界面时，把一些变量设置回初始值 (在selectlevel的最开始调用一次）
+void overagain()
+{
+	for (int i = 0; i < 20; i++)
+		input[i][0] = 'X';
+	for (int i = 0; i < 20; i++)
+		output[i][0] = 'X';
+
+	speed = 100;
+	inboxnon = 0;
+	nowx = 20;   nowy = 4;
+	flag = 0;
+
+	for (int i = 0; i < 1000; i++)
+		mark[i] = 0;
 }
