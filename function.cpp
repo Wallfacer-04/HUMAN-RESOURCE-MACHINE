@@ -43,7 +43,7 @@ void outbox()
 	isnowwood = false;
 	outputnum++;
 	//传送带动
-	for (int i = outputnum; i > 0; i--)
+	for (int i = outputnum-1; i > 0; i--)
 	{
 		strcpy(output[i], output[i - 1]);
 		if (i < 6)
@@ -172,7 +172,7 @@ void inbox_4()
 	for (int i = 0; i < inputnum; i++)
 	{
 		strcpy(input[i], input[i + 1]);
-		Printnum(inwood.body[i].X + 2, inwood.body[i].Y + 1, input[i]);
+		if(i < 6) Printnum(inwood.body[i].X + 2, inwood.body[i].Y + 1, input[i]);
 	}
 	inputnum--;
 }
@@ -194,7 +194,7 @@ void outbox_4()
 	isnowwood = false;
 	outputnum++;
 	//传送带动
-	for (int i = outputnum; i > 0; i--)
+	for (int i = outputnum-1; i > 0; i--)
 	{
 		strcpy(output[i], output[i - 1]);
 		Printnum(outwood.body[i].X + 2, outwood.body[i].Y + 1, output[i]);//格式化输出 
