@@ -51,8 +51,8 @@ void Play1()
 	{
 		if (i <= 25)
 			setposition(59, 2 + i);	//设置光标位置
-		else if (i > 25 && i <= 50) setposition(79, 2 + i - 20);
-		else if (i > 50 && i <= 75) setposition(99, 2 + i - 40);
+		else if (i > 25 && i <= 50) setposition(79, 2 + i - 25);
+		else if (i > 50 && i <= 75) setposition(99, 2 + i - 50);
 		printf("%d %s ", i, instruction[i].s);
 		printf(" %s", instruction[i].appendix);
 	}
@@ -64,8 +64,8 @@ void Play1()
 
 		if (i <= 25)
 			setposition(58, 2 + i);	//设置光标位置
-		else if (i > 25 && i <= 50) setposition(78, 2 + i - 20);
-		else if (i > 50 && i <= 75) setposition(98, 2 + i - 40);
+		else if (i > 25 && i <= 50) setposition(78, 2 + i - 25);
+		else if (i > 50 && i <= 75) setposition(98, 2 + i - 50);
 		putchar('>');//将>号指向当下正在执行的命令
 
 		if (mark[i] == 1)
@@ -97,8 +97,8 @@ void Play1()
 		//每条指令执行完后，箭头下移
 		if (nowi <= 25)
 			setposition(58, 2 + nowi);	//设置光标位置
-		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 20);
-		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 40);
+		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 25);
+		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 50);
 		putchar(' ');
 		if (flag)
 		{
@@ -194,8 +194,8 @@ void Play2()
 	{
 		if (i <= 25)
 			setposition(59, 2 + i);	//设置光标位置
-		else if (i > 25 && i <= 50) setposition(79, 2 + i - 20);
-		else if (i > 50 && i <= 75) setposition(99, 2 + i - 40);
+		else if (i > 25 && i <= 50) setposition(79, 2 + i - 25);
+		else if (i > 50 && i <= 75) setposition(99, 2 + i - 50);
 		printf("%d %s ", i, instruction[i].s);
 		printf(" %s", instruction[i].appendix);
 	}
@@ -206,8 +206,8 @@ void Play2()
 		
 		if (i <= 25)
 			setposition(58, 2 + i);	//设置光标位置
-		else if (i > 25 && i <= 50) setposition(78, 2 + i - 20);
-		else if (i > 50 && i <= 75) setposition(98, 2 + i - 40);
+		else if (i > 25 && i <= 50) setposition(78, 2 + i - 25);
+		else if (i > 50 && i <= 75) setposition(98, 2 + i - 50);
 		putchar('>');//将>号指向当下正在执行的命令
 
 		if (mark[i])
@@ -245,8 +245,8 @@ void Play2()
 		//每条指令执行完后，箭头下移
 		if (nowi <= 25)
 			setposition(58, 2 + nowi);	//设置光标位置
-		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 20);
-		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 40);
+		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 25);
+		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 50);
 		putchar(' ');
 		if (flag)
 		{
@@ -490,8 +490,8 @@ void Play4()
 	{
 		if (i <= 25)
 			setposition(59+6, 2 + i);	//设置光标位置
-		else if (i > 25 && i <= 50) setposition(79, 2 + i - 25);
-		else if (i > 50 && i <= 75) setposition(99, 2 + i - 50);
+		else if (i > 25 && i <= 50) setposition(79+6, 2 + i - 25);
+		else if (i > 50 && i <= 75) setposition(99+6, 2 + i - 50);
 		printf("%d %s ", i, instruction[i].s);
 		printf(" %s", instruction[i].appendix);
 	}
@@ -502,9 +502,9 @@ void Play4()
 		int nowi = i;
 
 		if (nowi <= 25)
-			setposition(58, 2 + nowi);	//设置光标位置
-		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 25);
-		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 50);
+			setposition(58+6, 2 + nowi);	//设置光标位置
+		else if (nowi > 25 && nowi <= 50) setposition(78+6, 2 + nowi - 25);
+		else if (nowi > 50 && nowi <= 75) setposition(98+6, 2 + nowi - 50);
 		putchar('>');//将>号指向当下正在执行的命令
 
 		if (mark[i])
@@ -534,12 +534,12 @@ void Play4()
 			system("cls");
 			selectlevel();
 		}
-		if (inboxnon) Judge3();
+		if (inboxnon) Judge4();
 		//每条指令执行完后，箭头下移
 		if (nowi <= 25)
-			setposition(58, 2 + nowi);	//设置光标位置
-		else if (nowi > 25 && nowi <= 50) setposition(78, 2 + nowi - 25);
-		else if (nowi > 50 && nowi <= 75) setposition(98, 2 + nowi - 50);
+			setposition(58+6, 2 + nowi);	//设置光标位置
+		else if (nowi > 25 && nowi <= 50) setposition(78+6, 2 + nowi - 25);
+		else if (nowi > 50 && nowi <= 75) setposition(98+6, 2 + nowi - 50);
 		putchar(' ');
 		if (flag)
 		{
