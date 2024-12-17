@@ -1,0 +1,67 @@
+inbox
+copyto 0
+inbox
+copyto 1
+copyfrom 0
+sub 1
+jumpifzero 9
+jump 11
+copyfrom 0
+outbox
+inbox
+copyto 0
+copyfrom 0
+sub 1
+jumpifzero 17
+jump 19
+copyfrom 0
+outbox
+inbox
+copyto 1
+copyfrom 0
+sub 1
+jumpifzero 25
+jump 27
+copyfrom 0
+outbox
+inbox
+copyto 0
+copyfrom 0
+sub 1
+jumpifzero 33
+jump 35
+copyfrom 0
+outbox
+inbox
+copyto 1
+copyfrom 0
+sub 1
+jumpifzero 41
+jump 43
+copyfrom 0
+outbox
+inbox
+copyto 0
+copyfrom 0
+sub 1
+jumpifzero 49
+jump 51
+copyfrom 0
+outbox
+inbox
+copyto 1
+copyfrom 0
+sub 1
+jumpifzero 57
+jump 59
+copyfrom 0
+outbox
+inbox
+copyto 0
+copyfrom 0
+sub 1
+jumpifzero 65
+jump 67
+copyfrom 0
+outbox
+inbox
