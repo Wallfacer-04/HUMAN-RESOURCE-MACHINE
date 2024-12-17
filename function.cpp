@@ -35,7 +35,6 @@ void outbox()
 	}
 	if (isnowwood == false)//错误情况
 	{
-		system("cls");
 		flag = 1;//标志出错
 		return;
 	}
@@ -186,7 +185,6 @@ void outbox_4()
 	}
 	if (isnowwood == false)//错误情况
 	{
-		system("cls");
 		flag = 1;//标志出错
 		return;
 	}
