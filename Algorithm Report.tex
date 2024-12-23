@@ -1,0 +1,319 @@
+\documentclass{report}
+\usepackage{ctex}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}    
+\usepackage{graphicx,caption,subcaption,animate}       
+\usepackage{amsmath}       
+\usepackage{amsfonts}     
+\usepackage{ragged2e}
+\usepackage{array,tabularx,setspace}
+\usepackage{url}
+\usepackage{hyperref} 
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+}
+\urlstyle{same}
+
+\usepackage{geometry}
+\geometry{top=2cm}
+
+\usepackage{titlesec}
+\titleformat{\chapter} [hang] {\bfseries\Large} 
+{\thechapter\hspace{20pt}}  {0pt}  {\Large} 
+\titlespacing*{\chapter}{0pt}{20pt}{40pt}
+
+\title{程序设计基础大作业算法报告}
+\author{自46\; 陈奕帆 \quad 物理41\; 周启轩}
+\date{12/12/2024}
+
+\begin{document}
+    \maketitle
+    \tableofcontents
+
+    \chapter{设计思路}
+    \section{概述}
+    该项目全部使用c++语言编写，用户可通过在命令行窗口直接使用键盘交互进行游戏
+    \section{核心思路}\noindent
+    (\uppercase\expandafter{\romannumeral1})界面显示主要思路：\vspace{0.5em}\par
+    (1) 对于每个要显示的对象，均定义一个（或一类）结构体，并使用相应的结构体变量（或\\\hspace*{3.6em}数组）存储特定对象在命令行窗口中的坐标、尺寸等位置信息\vspace{0.3em}\par
+    (2) 使用"windows.h"库中的SetConsoleCursorPosition函数控制光标位置，在结构体存储\\\hspace*{3.6em}的坐标位置进行对应符号的打印\vspace{0.3em}\par
+    (3) 为了实现某些对象的移动，通过定义特定函数，先将对象原先所在位置的符号全部擦\\\hspace*{3.6em}除（设为空格），然后使对象的所有坐标进行整体平移，并进行重新打印\vspace{0.3em}\par
+    (4) 对于传送带、空地、以及当前积木，特别定义了对应的char型数组用以存储积木的有\\\hspace*{3.6em}无以及数值：若无积木，则char型数组的值为"X",并在对应的位置直接打印X；若有\\\hspace*{3.6em}积木，则直接在对应位置打印该数组存储的字符串\vspace{0.5em}\\
+    (\uppercase\expandafter{\romannumeral2})指令主要思路：\vspace{0.3em}\par
+    (1) 首先由用户输入总共的指令数n，并依次按行输入指令；定义一个Instruction结构体\\\hspace*{3.6em}并声明一个结构体数组instruction[1000]，用来存储用户输入的每行指令以及操作数\\\hspace*{3.6em}（若该指令有操作数）\vspace{0.3em}\par
+    (2) 对指令从1到n进行循环，首先判断由该指令是否有误(包括超出指令集、操作数异\\\hspace*{3.6em}常、指令内部错误等等)，若有误，则输出"Error on instruction x",并结束游戏；若指\\\hspace*{3.6em}令正常，则调用该指令对应的函数\vspace{0.3em}\par
+    (3) 对于jump和jumpifzero指令，调用相应函数，使用指针修改第二轮循环过程中指标\\\hspace*{3.6em}i的值即可实现指令效果
+
+    \chapter{工程结构}\label{chap-2}
+    \section{项目结构}
+    项目工作主要在Visual Studio 2022中进行，项目名称为HUMAN RESOURCE MACHINE，各类文件及其功能主要包括：\vspace{0.5em}\\
+    (\uppercase\expandafter{\romannumeral1})头文件：\\
+    \begin{tabularx}{1\textwidth}{lX}
+    (1) base.h  \hspace*{6.8em}& 由于项目体量较小，且为避免潜在的重复定义，全部变量及函数的声明均被写入该文件
+    \end{tabularx}\vspace{0.5em}
+    (\uppercase\expandafter{\romannumeral2})源文件：\vspace{0.3em}\\
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabularx}{1\textwidth}{lX}
+    (1) main.cpp & 项目的启动文件，其中只包含关卡选择界面的编写\\
+    (2) initialization.cpp & 用于对四个关卡的显示界面进行初始化（包括输入/输出传送带、空地、机器人、当前积木、指令窗口等）\\
+    (3) print.cpp & 调用该文件中的函数可以打印或擦除传送带、机器人等对象，还包括一些能使机器人移动的函数\\
+    (4) play.cpp & 不同关卡功能实现的主要文件,其中包含play1、play2、play3、play4四个函数，根据用户选择的关卡调用相应函数即可启动该关卡\\
+    (5) function.cpp & 编写指令集中所有指令的功能实现\\
+    (6) operatestring.cpp \qquad\qquad& 一些附加函数，用以在字符串与数字之间进行转换，内含判断是否发生转换异常的功能\\
+    (7) judge.cpp & 用以判断游戏结束后是否成功通关，并显示"Success"或"Fail"
+    \end{tabularx}\vspace{0.8em}
+    (\uppercase\expandafter{\romannumeral3})资源文件：\par
+    (1) in.txt \hspace{6.6em} 用来存储用户已经通过的关卡数
+    \section{模块划分}\noindent
+    (1) 界面显示模块主要包含在initialization.cpp和print.cpp中\\
+    (2) 指令模块主要包含在function.cpp中,指令相应函数包含了对前端(此处指命令\\\hspace*{1.7em}行窗口的显示)和后端两部分的修改,调用时一方面在后端修改各变量的数值，另一方面\\\hspace*{1.7em}同时对前端的显示做出相应更新\\
+    (3) 不同模块之间的交互主要通过调用模块内部相应函数进行
+
+    \chapter{选择关卡界面的设计}
+    用户初次打开时，将会看到四个代表关卡的方框，其中只有第1关已解锁，2、3、4关的方框中用"X"表示尚未解锁，如图3.1\vspace{-1em}\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{select_level 1.png}
+        \caption*{图3.1}
+      \end{figure}\par
+    当用户成功通过第1关时，将会返回选择关卡界面，此时第2关也已经解锁，如图3.2\vspace{-1em}\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{select_level 2.png}
+        \caption*{图3.2}
+    \end{figure}\newpage
+    如果用户尝试选择尚未解锁的关卡，窗口会进行提示，并让用户重新选择关卡，如图3.3\vspace{-1em}\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{select_level 3.png}
+        \caption*{图3.3}
+    \end{figure}\par
+    如果用户已经顺利通过了所有关卡，则在选择关卡时可以自由选择，如图3.4\vspace{-1em}\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{select_level 5.png}
+        \caption*{图3.4}
+    \end{figure}
+
+
+
+    \chapter{游戏测试}
+    \section{测试目标}
+    测试游戏主线的运行是否正常、能否良好地应对不合法输入、窗口显示是否存在缺陷等
+    \section{游戏主线测试}
+    对于第1、2、3关，如果用户输入正确的通关指令，则会在输出传送带上显示正确的输出序列，并且窗口稍后会显示"Success"代表此关卡成功通关
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth,height=0.17\textheight]{test1.png}
+            \caption*{图4.2.1：第1关通关界面}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{test-2.png}
+            \caption*{图4.2.2：第2关通关界面}
+        \end{subfigure}
+    \end{figure}
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth,height=0.17\textheight]{test-3.png}
+            \caption*{图4.2.3：第3关通关界面}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{test-success.png}
+            \caption*{图4.2.4：通关后显示"Success"界面}
+        \end{subfigure}
+    \end{figure}\vspace{1em}\par
+    而如果用户的未达成通关条件，或是指令执行时出现错误，则会显示"Fail"或"Error on instruction X",代表游戏失败或指令错误\newpage
+    \begin{figure}[t]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth,height=0.17\textheight]{test1-fail.png}
+            \caption*{图4.2.5：第1关失败界面}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{fail.png}
+            \caption*{图4.2.6：失败后显示"Fail"界面}
+        \end{subfigure}
+    \end{figure}\par
+    \begin{figure}[htbp]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth,height=0.17\textheight]{test1-error -1.png}
+            \caption*{图4.2.7：第1关指令错误界面}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{test1-error.png}
+            \caption*{图4.2.8：检测到指令错误后显示Error界面}
+        \end{subfigure}
+    \end{figure}\par
+
+    \section{非法输入的应对}
+    (1)选择关卡页面\\
+    如果用户输入非整数，则提示格式错误；\\
+    如果用户输入整数，但不是1、2、3、4中任意一个，则提示不存在此关卡；\\
+    以上情况均要求用户重新输入
+    \begin{figure}[htbp]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth,height=0.175\textheight]{select-illegal-1.png}
+            \caption*{图4.3.1：输入非整数}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{select-illegal-2.png}
+            \caption*{图4.3.2：输入为整数，但不是1/2/3/4}
+        \end{subfigure}
+    \end{figure}\newpage
+    (2)游戏进行中\\
+    如果用户输入的指令数非整数，则提示格式错误，并要求重新输入；\\
+    如果用户输入的指令是非法的，在"CODE"栏中仍会正常显示该错误指令；该指令以前的指令会正常运行，运行到该指令时会暂停，等待1s后输出"Error on instruction X"
+    \begin{figure}[htbp]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{game-illegal-1.png}
+            \caption*{图4.3.3：指令数非整数}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{game-illegal-2.png}
+            \caption*{图4.3.4：指令非法}
+        \end{subfigure}
+    \end{figure}\\
+
+    如果用户输入的文件名不存在，则提示格式错误，并要求重新输入;\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=\textwidth]{error 11.png}
+        \caption*{文件不存在}
+    \end{figure}
+            
+
+    \chapter{游戏运行说明}
+    \section{文件说明}\noindent
+    文件压缩包链接：\;\href{https://github.com/Wallfacer-04/HUMAN-RESOURCE-MACHINE/blob/main/HUMAN%20RESOURCE%20MACHINE.zip}{https://github.com/Wallfacer-04/HUMAN-RESOURCE-MACHINE/blob/\\\hspace*{8em}main/HUMAN\%20RESOURCE\%20MACHINE.zip}\vspace{0.5em}\\
+    除在\;\hyperref[chap-2]{2\;工程结构}\;中提到的文件外，该压缩包内还有：\\
+    (1)\;level1.txt \;,\; level2.txt \;,\; level3.txt \;,\; level4.txt \\
+    \hspace*{1em} 分别为第1、2、3、4关的通关指令(包含指令数) \vspace{0.1em}\\
+    (2)\;main1.cpp \quad 这是提交到OJ平台上的代码
+
+    \section{代码运行说明}\noindent
+    将压缩包内的代码在visual studio中打开后，即可正常运行\\
+    若要直接解锁所有关卡，可先将压缩包内in.txt文件内的数值改为5，之后在visual studio中运行该项目\vspace{0.5em}\par
+    \textbf{第一步}\par
+    在选择关卡页面用键盘输入1-4中的一个数字，并按一次回车；显示“请按任意键继续”后，再按一次回车，即可进入游戏界面
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{step1.png}
+        \caption*{图5.1}
+    \end{figure}\newpage
+    \textbf{第二步}\par
+    选择使用键盘输入/文件读取(输入"k"代表键盘输入，输入"f"代表文件读取)
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth,height=0.32\textheight]{图5.2.1.png}
+        \caption*{图5.2}
+    \end{figure}\par
+
+    \textbf{第三（一）步}\par
+    若输入"k",则用键盘输入指令数，并按一次回车
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth,height=0.32\textheight]{step2.png}
+        \caption*{图5.3(1)}
+    \end{figure}\par
+    
+    \textbf{第四（一）步}\par
+    用键盘逐行输入指令(可直接复制cheat-x.txt文件中的指令)，再按一次回车，即可进入运行阶段\newpage
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth,height=0.35\textheight]{step3.png}
+        \caption*{图5.4(1)}
+    \end{figure}\par
+
+    \textbf{第三（二）步}\par
+    若输入"f",则输入文件名（包含后缀名），并按一次回车
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth,height=0.32\textheight]{图5.3.1.png}
+        \caption*{图5.3(2)}
+    \end{figure}\par
+
+    \textbf{第四步}\par
+    等待机器人自动运行,自动运行期间可通过直接按键盘上的数字键1,2,3,4,5键调节机器人运行速度,1为最慢,5为最快(按键后可能需要等待一会才会改变速度)\par
+    运行结束后,窗口左下角显示"请按任意键继续,此时按回车键可进入判断是否成功通关的界面\newpage
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth,height=0.35\textheight]{step4.png}
+        \caption*{图5.4}
+    \end{figure}\par
+
+    \textbf{第五步}\par
+    查看判定结果:\;若显示"Success"代表成功通关,若显示"Fail"代表通关失败,若除"Fail"外还显示"Error on instruction X",代表第X条指令有误
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.45\textwidth]{step5.png}
+        \caption*{图5.5}
+    \end{figure}\par
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{step7.png}
+            \caption*{图5.6}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.45\textwidth}
+            \includegraphics[width=\textwidth]{step6.png}
+            \caption*{图5.7}
+        \end{subfigure}
+    \end{figure}\par
+    显示判定结果后,按一次回车键即可返回选择关卡界面
+
+
+    \chapter{自由创新关卡}
+    \section{概述}
+    该关卡的所有积木运载的单位由数字改为单个字符，用户需借助空地将输入传送带上的积木依照顺序放到输出传送带上
+    \section{关卡任务}\noindent
+    输入序列：\hspace{3em}r\;,\;w\;,\;d\;,\;l\;,\;o\;,\;h\;,\;e\\
+    目标输出序列：\hspace{1em}d\;,\;l\;,\;r\;,\;o\;,\;w\;,\;o\;,\;l\;,\;l\;,\;e\;,\;h\\
+    可用空地数：\hspace{2em}3\\
+    可用指令集：\hspace{2em}inbox\;,\;outbox\;,\;copyto\;,\;copyfrom
+    \section{内容展示}\noindent
+    一种可行通关代码：\quad 指令数：28 \quad 指令：\href{https://github.com/Wallfacer-04/HUMAN-RESOURCE-MACHINE/blob/main/cheat-4.txt}{cheat-4.txt}\\
+    用户完成第四关的关卡任务后，游戏界面如下：
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{level4-1.png}
+        \caption*{图6.1}
+    \end{figure}\newpage
+    可以发现，输出传送带上的内容从上到下组成一句话:"Hello world"。用户达成这一任务后，命令行窗口不会输出"Success"，而是改为"Hello, world!",如图5.2\\
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.8\textwidth]{level4-2.png}
+        \caption*{图6.2}
+    \end{figure}
+
+    
+
+    \chapter{小组分工}
+    \section{成员名单}\noindent
+    \begin{tabular}{llll}
+        自动化系 & 自46 & 陈奕帆 & 2024010987 \\
+        物理系 & 物理41 & 周启轩 & 2024011184 
+        \end{tabular}
+    \section{具体分工}\noindent
+    陈奕帆：\;主要负责前端显示部分的开发，包括选择关卡界面、游戏界面、传送带、机器人等的\\\hspace*{4em}显示以及变动\\
+    周启轩：\;主要负责后端运算部分的开发，包括指令相应函数、指令的执行等过程\vspace{0.5em}\\
+    项目后期的调试、更新等工作由二人共同负责
+    
+
+    \chapter{录屏演示共享链接}
+    访问清华云盘：\href{https://cloud.tsinghua.edu.cn/f/0f7982a50b644c09b793/}{https://cloud.tsinghua.edu.cn/f/0f7982a50b644c09b793/}
+
+
+    \chapter{算法报告源码}
+    本算法报告全部使用\LaTeX 编写,源码见\href{https://github.com/Wallfacer-04/HUMAN-RESOURCE-MACHINE/blob/main/Algorithm%20Report.tex}{https://github.com/Wallfacer-04/HUMAN-RESOURCE-MACHINE/blob/main/Algorithm\%20Report.tex}
+    
+\end{document}
