@@ -6,44 +6,135 @@ void Play1()
 		可用空地数：0
 		可用指令集：inbox, outbox*/
 	initUI1();
-	printf("输入序列：1, 2 \n目标输出序列：1, 2 \n可用空地数：0 \n 可用指令集：inbox, outbox\n请输入你的指令数：\n");
+	printf("输入序列：1, 2 \n目标输出序列：1, 2 \n可用空地数：0 \n 可用指令集：inbox, outbox\n");
+
+	printf("请选择使用键盘输入/文件读取(\"k\"-键盘输入，\"f\"-文件读取): ");
+
+	int n;
 	inputnum = 2;
 	outputnum = 0;
 	strcpy(input[0], "1");
 	strcpy(input[1], "2");
-	
-	char tmp = cin.get();
-	char nnn[10000];
-	if(tmp=='\n')cin.getline(nnn, 10000);
+
+	string sss;
+	getline(cin, sss);
+	if (sss == "k")
+	{
+		printf("请输入你的指令数：\n");
+		
+
+		char tmp = cin.get();
+		char nnn[10000];
+		if (tmp == '\n')cin.getline(nnn, 10000);
+		else
+		{
+			nnn[0] = tmp;
+			cin.getline(nnn + 1, 10000 - 1);
+		}
+		n = tonumstruction(nnn);
+		if (n == -1)
+		{
+			cout << "格式错误，请重新输入\n\n";
+			system("pause");
+			system("cls");
+			Play1();
+		}
+
+		printf("请按行输入你的指令:\n");
+		for (int i = 1; i <= n; i++)
+		{
+			cin >> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (cin.get() == ' ')
+				{
+					mark[i] = 1;
+					cin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else cin.getline(instruction[i].appendix, 10000);
+		}
+	}
+
+	else if (sss == "f")
+	{
+		printf("请输入文件名: ");
+		string filename;
+		getline(cin, filename);
+
+		ifstream fin;
+		fin.open(filename);
+
+		if (!fin)
+		{
+			cout << "未找到此文件，请重新输入";
+			system("pause");
+			system("cls");
+			Play1();
+		}
+
+		fin >> n;
+
+		for (int i = 1; i <= n; i++)
+		{
+			fin >> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (fin.get() == ' ')
+				{
+					mark[i] = 1;
+					fin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else fin.getline(instruction[i].appendix, 10000);
+		}
+	}
+
 	else
 	{
-		nnn[0] = tmp;
-		cin.getline(nnn + 1, 10000 - 1);
-	}
-	int n = tonumstruction(nnn);
-	if (n == -1)
-	{
-		cout << "格式错误，请重新输入\n\n";
+		printf("格式错误，请重新输入\n");
 		system("pause");
 		system("cls");
 		Play1();
 	}
 
-	printf("请按行输入你的指令:\n");
-	for (int i = 1; i <= n; i++)
-	{
-		cin >> instruction[i].s;
-		if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+
+		/*char tmp = cin.get();
+		char nnn[10000];
+		if (tmp == '\n')cin.getline(nnn, 10000);
+		else
 		{
-			if (cin.get() == ' ')
-			{
-				mark[i] = 1;
-				cin.getline(instruction[i].appendix, 10000);
-			}
-			continue;
+			nnn[0] = tmp;
+			cin.getline(nnn + 1, 10000 - 1);
 		}
-		else cin.getline(instruction[i].appendix, 10000);
-	}
+		int n = tonumstruction(nnn);
+		if (n == -1)
+		{
+			cout << "格式错误，请重新输入\n\n";
+			system("pause");
+			system("cls");
+			Play1();
+		}
+
+		printf("请按行输入你的指令:\n");
+		for (int i = 1; i <= n; i++)
+		{
+			cin >> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (cin.get() == ' ')
+				{
+					mark[i] = 1;
+					cin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else cin.getline(instruction[i].appendix, 10000);
+		}*/
+	
+
 	system("cls");
 	initUI1();
 
@@ -124,7 +215,7 @@ void Play2()
 	initUI2();
 	setposition(0, 19);//设置光标位置
 	printf("输入序列：3,9,5,1,-2,-2,9,-9 \n目标输出序列：-6,6,4,-4,0,0,18,-18 \n可用空地数：3 \n\
-可用指令集：inbox,outbox,copyfrom,copyto,add,sub,jump,jumpifzero\n请输入你的指令数：\n");
+可用指令集：inbox,outbox,copyfrom,copyto,add,sub,jump,jumpifzero\n");
 	inputnum = 8;
 	outputnum = 0;
 	emptynum = 3;
@@ -136,58 +227,136 @@ void Play2()
 	strcpy(input[5], "-2");
 	strcpy(input[6], "9");
 	strcpy(input[7], "-9");
+
+
+	printf("请选择使用键盘输入/文件读取(\"k\"-键盘输入，\"f\"-文件读取): ");
+
+	int n;
 	//n记录指令数； 
-	char tmp = cin.get();
-	char nnn[10000];
-	if (tmp == '\n')cin.getline(nnn, 10000);
+
+	string sss;
+	getline(cin, sss);
+	if (sss == "k")
+	{
+		printf("请输入你的指令数:\n");
+		char tmp = cin.get();
+		char nnn[10000];
+		if (tmp == '\n')cin.getline(nnn, 10000);
+		else
+		{
+			nnn[0] = tmp;
+			cin.getline(nnn + 1, 10000 - 1);
+		}
+		n = tonumstruction(nnn);
+		if (n == -1)
+		{
+			cout << "格式错误，请重新输入\n\n";
+			system("pause");
+			system("cls");
+			Play2();
+		}
+
+		printf("请按行输入你的指令:\n");
+		for (int i = 1; i <= n; i++)
+		{
+			scanf("%s", instruction[i].s);
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (cin.get() == ' ')
+				{
+					mark[i] = 1;
+					cin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				gets_s(instruction[i].appendix);
+				mark[i] = 1;
+				continue;
+			}
+			gets_s(instruction[i].appendix);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+			if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
+			{
+				if (instruction[i].num >= n)mark[i] = 1;
+			}
+			else
+			{
+				if (instruction[i].num > 2) mark[i] = 1;
+			}
+		}
+	}
+
+	else if (sss == "f")
+	{
+		printf("请输入文件名: ");
+		string filename;
+		getline(cin, filename);
+
+		ifstream fin;
+		fin.open(filename);
+
+		if (!fin)
+		{
+			cout << "未找到此文件，请重新输入";
+			system("pause");
+			system("cls");
+			Play2();
+		}
+
+		fin >> n;
+
+		for (int i = 1; i <= n; i++)
+		{
+			fin>> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (fin.get() == ' ')
+				{
+					mark[i] = 1;
+					fin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				fin.getline(instruction[i].appendix,10000);
+				mark[i] = 1;
+				continue;
+			}
+			fin.getline(instruction[i].appendix,10000);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+			if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
+			{
+				if (instruction[i].num >= n)mark[i] = 1;
+			}
+			else
+			{
+				if (instruction[i].num > 2) mark[i] = 1;
+			}
+		}
+
+
+	}
+
 	else
 	{
-		nnn[0] = tmp;
-		cin.getline(nnn + 1, 10000 - 1);
-	}
-	int n = tonumstruction(nnn);
-	if (n == -1)
-	{
-		cout << "格式错误，请重新输入\n\n";
+		printf("格式错误，请重新输入\n");
 		system("pause");
 		system("cls");
 		Play2();
 	}
+	
 
-	printf("请按行输入你的指令:\n");
-	for (int i = 1; i <= n; i++)
-	{
-		scanf("%s", instruction[i].s);
-		if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
-		{
-			if (cin.get() == ' ')
-			{
-				mark[i] = 1;
-				cin.getline(instruction[i].appendix, 10000);
-			}
-			continue;
-		}
-		else if (notinstruction(instruction[i].s))
-		{
-			gets_s(instruction[i].appendix);
-			mark[i] = 1;
-			continue;
-		}
-		gets_s(instruction[i].appendix);
-		instruction[i].num = tonumstruction(instruction[i].appendix);
-		if (instruction[i].num == -1 )
-		{
-			mark[i] = 1;
-		}
-		if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
-		{
-			if (instruction[i].num >= n)mark[i] = 1;
-		}
-		else
-		{
-			if (instruction[i].num > 2) mark[i] = 1;
-		}
-	}
 	system("cls");
 	initUI2();
 	for (int i = 1; i <= n; i++)
@@ -272,7 +441,7 @@ void Play3()
 	initUI3();
 	setposition(0, 19);//设置光标位置
 	printf("输入序列：6,2,7,7,-9,3,-3,-3 \n目标输出序列：7,-3 \n可用空地数：3 \n\
-可用指令集：inbox,outbox,copyfrom,copyto,add,sub,jump,jumpifzero\n请输入你的指令数：\n");
+可用指令集：inbox,outbox,copyfrom,copyto,add,sub,jump,jumpifzero\n");
 	inputnum = 8;
 	outputnum = 0;
 	emptynum = 3;
@@ -284,60 +453,140 @@ void Play3()
 	strcpy(input[5], "3");
 	strcpy(input[6], "-3");
 	strcpy(input[7], "-3");
+
+
+	printf("请选择使用键盘输入/文件读取(\"k\"-键盘输入，\"f\"-文件读取): ");
+
+	int n;
 	//n记录指令数； 
-	char tmp = cin.get();
-	char nnn[10000];
-	if (tmp == '\n')cin.getline(nnn, 10000);
+
+	string sss;
+	getline(cin, sss);
+	//n记录指令数； 
+
+	if (sss == "k")
+	{
+		printf("请输入指令数：\n");
+		char tmp = cin.get();
+		char nnn[10000];
+		if (tmp == '\n')cin.getline(nnn, 10000);
+		else
+		{
+			nnn[0] = tmp;
+			cin.getline(nnn + 1, 10000 - 1);
+		}
+		n = tonumstruction(nnn);
+		if (n == -1)
+		{
+			cout << "格式错误，请重新输入\n\n";
+			system("pause");
+			system("cls");
+			Play3();
+		}
+
+		printf("请按行输入你的指令:\n");
+		for (int i = 1; i <= n; i++)
+		{
+			scanf("%s", instruction[i].s);
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (cin.get() == ' ')
+				{
+					mark[i] = 1;
+					cin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				gets_s(instruction[i].appendix);
+				mark[i] = 1;
+				continue;
+			}
+			gets_s(instruction[i].appendix);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+
+			if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
+			{
+				if (instruction[i].num >= n)mark[i] = 1;
+			}
+			else
+			{
+				if (instruction[i].num > 2) mark[i] = 1;
+			}
+
+		}
+	}
+
+
+	else if (sss == "f")
+	{
+		printf("请输入文件名: ");
+		string filename;
+		getline(cin, filename);
+
+		ifstream fin;
+		fin.open(filename);
+
+		if (!fin)
+		{
+			cout << "未找到此文件，请重新输入";
+			system("pause");
+			system("cls");
+			Play3();
+		}
+
+		fin >> n;
+
+		for (int i = 1; i <= n; i++)
+		{
+			fin >> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (fin.get() == ' ')
+				{
+					mark[i] = 1;
+					fin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				fin.getline(instruction[i].appendix, 10000);
+				mark[i] = 1;
+				continue;
+			}
+			fin.getline(instruction[i].appendix, 10000);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+			if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
+			{
+				if (instruction[i].num >= n)mark[i] = 1;
+			}
+			else
+			{
+				if (instruction[i].num > 2) mark[i] = 1;
+			}
+		}
+	}
+
 	else
 	{
-		nnn[0] = tmp;
-		cin.getline(nnn + 1, 10000 - 1);
-	}
-	int n = tonumstruction(nnn);
-	if (n == -1)
-	{
-		cout << "格式错误，请重新输入\n\n";
+		printf("格式错误，请重新输入\n");
 		system("pause");
 		system("cls");
 		Play3();
 	}
 
-	printf("请按行输入你的指令:\n");
-	for (int i = 1; i <= n; i++)
-	{
-		scanf("%s", instruction[i].s);
-		if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
-		{
-			if (cin.get() == ' ')
-			{
-				mark[i] = 1;
-				cin.getline(instruction[i].appendix, 10000);
-			}
-			continue;
-		}
-		else if (notinstruction(instruction[i].s))
-		{
-			gets_s(instruction[i].appendix);
-			mark[i] = 1;
-			continue;
-		}
-		gets_s(instruction[i].appendix);
-		instruction[i].num = tonumstruction(instruction[i].appendix);
-		if (instruction[i].num == -1)
-		{
-			mark[i] = 1;
-		}
 
-		if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
-		{
-			if (instruction[i].num >= n)mark[i] = 1;
-		}
-		else
-		{
-			if (instruction[i].num > 2) mark[i] = 1;
-		}
 
-	}
 	system("cls");
 	initUI3();
 	for (int i = 1; i <= n; i++)
@@ -416,14 +665,14 @@ void Play3()
 
 //可用指令集：inbox,outbox,copyto,copyfrom
 //输入序列：r,w,d,l,o,h,e
-//目标输出序列： dlrowolleh ("helloworld"倒着写")
+//目标输出序列： dlrowolleh 
 void Play4()
 {
 	initUI4();
 
 	setposition(0, 19);//设置光标位置
 	printf("输入序列：r,w,d,l,o,h,e \n目标输出序列：d,l,r,o,w,o,l,l,e,h \n可用空地数：3 \n\
-可用指令集：inbox,outbox,copyfrom,copyto\n请输入你的指令数：\n");
+可用指令集：inbox,outbox,copyfrom,copyto\n");
 	inputnum = 7;
 	outputnum = 0;
 	emptynum = 3;
@@ -435,54 +684,132 @@ void Play4()
 	strcpy(input[5], "h");
 	strcpy(input[6], "e");
 	//n记录指令数； 
-	char tmp = cin.get();
-	char nnn[10000];
-	if (tmp == '\n')cin.getline(nnn, 10000);
+
+	printf("请选择使用键盘输入/文件读取(\"k\"-键盘输入，\"f\"-文件读取): ");
+
+	int n;
+	//n记录指令数； 
+
+	string sss;
+	getline(cin, sss);
+
+	if (sss == "k")
+	{
+		printf("请输入指令数：\n");
+		char tmp = cin.get();
+		char nnn[10000];
+		if (tmp == '\n')cin.getline(nnn, 10000);
+		else
+		{
+			nnn[0] = tmp;
+			cin.getline(nnn + 1, 10000 - 1);
+		}
+		n = tonumstruction(nnn);
+		if (n == -1)
+		{
+			cout << "格式错误，请重新输入\n\n";
+			system("pause");
+			system("cls");
+			Play4();
+		}
+
+		printf("请按行输入你的指令:\n");
+
+		for (int i = 1; i <= n; i++)
+		{
+			scanf("%s", instruction[i].s);
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (cin.get() == ' ')
+				{
+					mark[i] = 1;
+					cin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				gets_s(instruction[i].appendix);
+				mark[i] = 1;
+				continue;
+			}
+			gets_s(instruction[i].appendix);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+			if (strcmp(instruction[i].s, "copyto") == 0 || strcmp(instruction[i].s, "copyfrom") == 0)
+			{
+				if (instruction[i].num > 2)mark[i] = 1;
+			}
+		}
+	}
+
+	else if (sss == "f")
+	{
+		printf("请输入文件名: ");
+		string filename;
+		getline(cin, filename);
+
+		ifstream fin;
+		fin.open(filename);
+
+		if (!fin)
+		{
+			cout << "未找到此文件，请重新输入";
+			system("pause");
+			system("cls");
+			Play4();
+		}
+
+		fin >> n;
+
+		for (int i = 1; i <= n; i++)
+		{
+			fin >> instruction[i].s;
+			if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
+			{
+				if (fin.get() == ' ')
+				{
+					mark[i] = 1;
+					fin.getline(instruction[i].appendix, 10000);
+				}
+				continue;
+			}
+			else if (notinstruction(instruction[i].s))
+			{
+				fin.getline(instruction[i].appendix, 10000);
+				mark[i] = 1;
+				continue;
+			}
+			fin.getline(instruction[i].appendix, 10000);
+			instruction[i].num = tonumstruction(instruction[i].appendix);
+			if (instruction[i].num == -1)
+			{
+				mark[i] = 1;
+			}
+			if (strcmp(instruction[i].s, "jump") == 0 || strcmp(instruction[i].s, "jumpifzero") == 0)
+			{
+				if (instruction[i].num >= n)mark[i] = 1;
+			}
+			else
+			{
+				if (instruction[i].num > 2) mark[i] = 1;
+			}
+		}
+
+	}
+
+
 	else
 	{
-		nnn[0] = tmp;
-		cin.getline(nnn + 1, 10000 - 1);
-	}
-	int n = tonumstruction(nnn);
-	if (n == -1)
-	{
-		cout << "格式错误，请重新输入\n\n";
+		printf("格式错误，请重新输入\n");
 		system("pause");
 		system("cls");
 		Play4();
 	}
 
-	printf("请按行输入你的指令:\n");
-
-	for (int i = 1; i <= n; i++)
-	{
-		scanf("%s", instruction[i].s);
-		if (strcmp(instruction[i].s, "inbox") == 0 || strcmp(instruction[i].s, "outbox") == 0)
-		{
-			if (cin.get() == ' ')
-			{
-				mark[i] = 1;
-				cin.getline(instruction[i].appendix, 10000);
-			}
-			continue;
-		}
-		else if (notinstruction(instruction[i].s))
-		{
-			gets_s(instruction[i].appendix);
-			mark[i] = 1;
-			continue;
-		}
-		gets_s(instruction[i].appendix);
-		instruction[i].num = tonumstruction(instruction[i].appendix);
-		if (instruction[i].num == -1)
-		{
-			mark[i] = 1;
-		}
-		if (strcmp(instruction[i].s, "copyto") == 0 || strcmp(instruction[i].s, "copyfrom") == 0)
-		{
-			if (instruction[i].num > 2)mark[i] = 1;
-		}
-	}
 
 	system("cls");
 	initUI4();
